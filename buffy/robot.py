@@ -31,7 +31,7 @@ class Robot():
             # Add base to increase pH
             ab = 'base'
         # Start with idk random number of drops
-        #n_drops = random.randint(1,10) # use later
+        # n_drops = random.randint(1,10) # use later
         def action():
             """
             Input: action parameters
@@ -40,6 +40,7 @@ class Robot():
             """
             self.b.add_drip(ab)
         return action
+
     def at_goal(self):
         """
         Determine if goal pH is reached
