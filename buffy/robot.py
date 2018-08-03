@@ -1,6 +1,9 @@
+import Interface
+
 class Robot():
     def __init__(self, goal):
         self.goal = goal
+
         pass
     def observe(self):
         """
