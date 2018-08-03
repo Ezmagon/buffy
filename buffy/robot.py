@@ -1,6 +1,13 @@
-import Interface
+import random
 
 class Robot():
+    """
+    Main robot class
+    Robot observes, evaluates and takes action
+    Contains the buffer its holding and knows the goal pH value
+
+    run() method integrates the class method in a loop to reach the goal pH of the internal buffer
+    """
     def __init__(self, goal, buffer):
         self.g = goal
         self.b = buffer
@@ -10,23 +17,54 @@ class Robot():
         Observe the pH
         :return: pH as float
         """
-        return b.read_ph()
+        return self.b.read_ph()
     def evaluate(self):
         """
-        Input: current pH
-        :return: action parameters (acid/base, n drops)
+        Evaluate whether to add acid or base
+        Determine drip size
+        :return: action function
         """
-        pass
-    def action(self):
+        if self.observe() > self.g:
+            # Add acid to lower pH
+            ab = 'acid'
+        else:
+            # Add base to increase pH
+            ab = 'base'
+        # Start with idk random number of drops
+        #n_drops = random.randint(1,10) # use later
+        def action():
+            """
+            Input: action parameters
+            Do the action to influence
+            :return: None
+            """
+            self.b.add_drip(ab)
+        return action
+    def at_goal(self):
         """
-        Input: action parameters
-        Do the action to influence
-        :return: None
+        Determine if goal pH is reached
+        :return:
         """
-        pass
+        if self.observe() == round(self.g):
+            return True
+        else:
+            return False
+    def report(self):
+        """
+        Report internal status to user
+        :return:
+        """
+        print(self.observe())
     def run(self):
         """
         Integrate robot methods
         :return:
         """
-        while
+        while not self.at_goal():
+            # Evaluate what to do
+            action = self.evaluate()
+            # Run the action (add acid or base)
+            action()
+            # Report to the user
+            self.report()
+        return "Goal achieved!"
