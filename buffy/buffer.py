@@ -1,4 +1,4 @@
-class Buffer (object):
+class Buffer():
     def __init__(self, ph_start):
         self.pH = ph_start
 

@@ -1,12 +1,15 @@
+from buffy.robot import Robot
+
 def main():
 
-    b = Buffer()
+    #b = Buffer()
 
-    buffy = Robot(goal)
+    buffy = Robot(10)
+    buffy.evaluate()
 
-    result = run(buffy)
+    #result = run(buffy)
 
-    i.show_result(result)
+    #i.show_result(result)
 
 def run(r):
     """
@@ -14,7 +17,7 @@ def run(r):
     Input: r (Robot)
     :return:
     """
-
+    r.observe()
 
 if __name__ == "__main__":
     main()

@@ -1,16 +1,16 @@
 import Interface
 
 class Robot():
-    def __init__(self, goal):
-        self.goal = goal
-
+    def __init__(self, goal, buffer):
+        self.g = goal
+        self.b = buffer
         pass
     def observe(self):
         """
         Observe the pH
         :return: pH as float
         """
-        pass
+        return b.read_ph()
     def evaluate(self):
         """
         Input: current pH
@@ -24,3 +24,9 @@ class Robot():
         :return: None
         """
         pass
+    def run(self):
+        """
+        Integrate robot methods
+        :return:
+        """
+        while
