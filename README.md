@@ -5,4 +5,5 @@ Buffy the buffer robot is the 2018 Vilnius university Biohackathon project of th
 Members are:  
 Bram Wiggers  
 Owen Terpstra   
+Matthijs Tadema
 ...
