@@ -1,23 +1,29 @@
+#!/opt/anaconda/bin/python
+
+from sys import argv
 from buffy.robot import Robot
+from buffy.buffer import Buffer
+import random
 
-def main():
+def main(*args):
+    if len(args) != 2:
+        raise Exception("Wrong number of arguments")
 
-    #b = Buffer()
+    try:
+        goal = float(args[1])
+    except Exception as e:
+        # Raise exception if not a number
+        raise e
 
-    buffy = Robot(10)
-    buffy.evaluate()
+    if not goal < 14 or not goal > 1:
+        raise ValueError("Input has to be between 1 and 14")
 
-    #result = run(buffy)
+    buff = Buffer(random.randint(1, 14))
 
-    #i.show_result(result)
+    buffy = Robot(goal, buff)
+    result = buffy.run()
 
-def run(r):
-    """
-    Main loop
-    Input: r (Robot)
-    :return:
-    """
-    r.observe()
+    print(result)
 
 if __name__ == "__main__":
-    main()
+    main(*argv)
