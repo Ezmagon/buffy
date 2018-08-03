@@ -6,6 +6,12 @@ from buffy.buffer import Buffer
 import random
 
 def main(*args):
+    """
+    :param args: goal pH
+    Parse input params
+
+    :return: None
+    """
     if len(args) != 2:
         raise Exception("Wrong number of arguments")
 
@@ -18,9 +24,9 @@ def main(*args):
     if not goal < 14 or not goal > 1:
         raise ValueError("Input has to be between 1 and 14")
 
-    buff = Buffer(random.randint(1, 14))
+    b = Buffer(random.randint(1, 14))
 
-    buffy = Robot(goal, buff)
+    buffy = Robot(goal, b)
     result = buffy.run()
 
     print(result)

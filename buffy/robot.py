@@ -31,14 +31,14 @@ class Robot():
             # Add base to increase pH
             ab = 'base'
         # Start with idk random number of drops
-        n_drops = random.randint(1,10)
+        #n_drops = random.randint(1,10) # use later
         def action():
             """
             Input: action parameters
             Do the action to influence
             :return: None
             """
-            self.b.add_drip(ab, n_drops)
+            self.b.add_drip(ab)
         return action
     def at_goal(self):
         """
