@@ -8,7 +8,7 @@ def test(pH_goal = 10):
     out = []
     t = 0
     out.append((t, s.pH))
-    while s.pH != pH_goal:
+    while round(s.pH) != pH_goal:
 
         size = randint(1, 10)
         size /= 10
