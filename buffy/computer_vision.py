@@ -68,4 +68,28 @@ for c in cnts:
         displayCnt = approx
         break
 
+# extract the thermostat display, apply a perspective transform
+# to it
+warped = four_point_transform(gray, displayCnt.reshape(4, 2))
+output = four_point_transform(image, displayCnt.reshape(4, 2))
+cv2.imshow('Warped', warped)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# threshold the warped image, then apply a series of morphological
+# operations to cleanup the thresholded image
+thresh = cv2.threshold(warped, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+cv2.imshow('Threshold', thresh)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 5))
+thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+cv2.imshow('Open', thresh)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
 
