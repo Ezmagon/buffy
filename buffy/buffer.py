@@ -1,7 +1,7 @@
 import math
 
 class Buffer():
-    def __init__(self, s, pipet_size=math.pow(10,-6)):
+    def __init__(self, s, pipet_size = 1):
         """
         The buffer contains a buffer solution.
         Bases or acids can be added to find new pH values
@@ -13,7 +13,7 @@ class Buffer():
         #self.pKa = pKa
         #self.Amin = Amin
         #self.HA = HA
-        self.pipet_size = pipet_size
+        self.pipet_size = pipet_size * math.pow(10,-6)
         self.total_hc = 0
         self.set_ph()
 
@@ -38,9 +38,9 @@ class Buffer():
     #    return math.pow(self.Amin, 3)
     #    # return self.pKa + math.log10(self.Amin / self.HA)
 
-    def set_ph(self):
+    def set_ph(self, n = 0):
         """
         Read the pH value
         :return: pH value
         """
-        self.ph = self.s.read_ph(self.total_hc)
+        self.ph = self.s.read_ph(self.total_hc, n)

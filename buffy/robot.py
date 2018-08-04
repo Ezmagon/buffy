@@ -18,8 +18,20 @@ class Robot():
         #print ("Eyes recognized", eyes.recognize_numbers())
         """
         Observe the pH
+        Has to observe several times because of noise
         :return: pH as float
         """
+        n = 10 # noise
+        prev_ph = self.b.ph
+        self.b.set_ph(n)
+        n -= 1
+        obs_ph = self.b.ph
+        while not within_range(obs_ph, prev_ph):
+            prev_ph = obs_ph
+            self.b.set_ph(n)
+            n -= 1
+            obs_ph = self.b.ph
+        print("pH {:.2f} within range!".format(obs_ph))
         return self.b.ph
     def evaluate(self):
         """
@@ -62,7 +74,7 @@ class Robot():
             # Run the action (add acid or base)
             self.action(ab)
             # Report to the user
-            self.report()
+            #self.report()
         return "Goal achieved!"
 
 def within_range(a,b):
