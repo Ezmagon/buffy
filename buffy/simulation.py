@@ -78,9 +78,12 @@ class Simulation():
         new_hc = current_hc + hc
         # Fail safe for if new_hc < 0
         if new_hc < 0:
-            new_hc = 0.0000001
+            new_hc = math.pow(10, -14)
+        elif new_hc > 0.1:
+            new_hc = 0.1
         # Convert to pH by -log10(H+)
-        self.ph += math.log10(new_hc) * -1
+        self.ph = math.log10(new_hc) * -1
+
     def rec_data(self):
         """
         Record current state
@@ -108,12 +111,11 @@ class Simulation():
         # Now we are in the linear regime,
         # while the pH is lower than 14, add base
         while self.ph < 14:
-            self.linear(-hc)
+            self.linear(-1*hc)
             # Record state
             self.rec_data()
         # Now reset the buffer
         self.reset()
-        """
         # Not working yet
         # Start over, but add acid
         # Do this while the concentration of base is reasonable
@@ -126,7 +128,6 @@ class Simulation():
             self.linear(hc)
             # Record data
             self.rec_data()
-        """
         # self.data now contains all the data points
         # convert into a numpy array and sort by hc added
-        self.data = np.array(sorted(self.data, key = lambda x: x[0]))
+        self.data = np.array(sorted(self.data, key = lambda x: x[1]))
