@@ -3,6 +3,8 @@ import math
 class Buffer():
     def __init__(self, pKa=0, Amin=-1, HA=1, pipet_size=0.1):
         """
+        The buffer simulates a buffer solution.
+        Bases or acids can be added to find new pH values
         :param pKa:
         :param Amin:
         :param HA:
