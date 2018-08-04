@@ -1,48 +1,51 @@
-import tkinter as tk
 from tkinter import *
 
+def input_window():
 
-def user_goal_ph(text):
-    global goal_ph
-    if text == "": return True
-    try:
-        goal_ph=float(text)
-    except ValueError:
-        return False
-    return 1 <= goal_ph <= 14
+    """This creates out user input window and stores the goal pH for later use"""
 
-
-window = Tk()                   #dit maakt de orginele window met titel
-window.geometry("300x100")
-window.title('Buffy the Buffer Robot')
-
-a= Frame(window)                #dit maakt de vraag zin
-a.pack()
-label = Label(a, text = "What is your goal pH?\n")
-label.grid()
+    def user_goal_ph(inp):
+        global goal_ph
+        if inp == "": return True
+        try:
+            goal_ph=float(inp)
+        except ValueError:
+            return False
+        return 1 <= goal_ph <= 14
 
 
-vcmd = (window.register(user_goal_ph), "%P")    # dit roept de limiterende functie
-                                                #  op in input window
-entry = Entry(window, validate = "key", validatecommand=vcmd)
-entry.pack()
-entry.focus_set()
+    window = Tk()                   #dit maakt de orginele window met titel
+    window.geometry("300x100")
+    window.title('Buffy the Buffer Robot')
 
-b = Button(window,text='Go Buffy!',command=user_goal_ph)
-b.pack(side='right')
-b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
-b.pack(side='left')
-window.mainloop()
+    a = Frame(window)                #dit maakt de vraag zin
+    a.pack()
+    label = Label(a, text = "What is your goal pH?\n")
+    label.grid()
 
 
-print(goal_ph)
+    vcmd = (window.register(user_goal_ph), "%P")    # dit roept de limiterende functie
+                                                    #  op in input window
+    entry = Entry(window, validate = "key", validatecommand=vcmd)
+    entry.pack()
+    entry.focus_set()
+
+    b = Button(window,text='Go Buffy!', command=window.destroy)
+    b.pack(side='right')
+    b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
+    b.pack(side='left')
+
+    window.mainloop()
+
+    return goal_ph
+
+
+output = input_window()
+print("Output = " + str(output))
 
 
 
-
-
-
-''''
+'''
 
 def goalpH():
     userinput = int(input("What is your goal pH?\n"))
@@ -56,7 +59,7 @@ def goalpH():
 
 goalpH = goalpH()
 
-''''
+'''
 
 
 
