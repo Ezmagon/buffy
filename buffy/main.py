@@ -3,7 +3,7 @@
 from sys import argv
 from buffy.robot import Robot
 from buffy.buffer import Buffer
-from buffy.input_window import input_window
+from buffy.input_window_and_choice_window import input_window
 import random
 from buffy.simulation import Simulation
 

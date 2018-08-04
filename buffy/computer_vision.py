@@ -14,7 +14,11 @@ DIGITS_LOOKUP = {
     (1, 1, 0, 1, 1, 1, 1): 6,
     (1, 0, 1, 0, 0, 1, 0): 7,
     (1, 1, 1, 1, 1, 1, 1): 8,
-    (1, 1, 1, 1, 0, 1, 1): 9
+    (1, 1, 1, 1, 0, 1, 1): 9,
+    # Shortcut for instead of Neural Network
+    (0, 1, 0, 1, 1, 1, 1): 6,
+    (0, 0, 0, 0, 0, 1, 0): 4,
+    (0, 0, 0, 0, 1, 1, 0): 4
 }
 
 
@@ -35,6 +39,7 @@ class VisionForRobot:
         # pre-process the image by resizing it, converting it to
         # graycale, blurring it, and computing an edge map
         image = imutils.resize(image, height=500)
+        print("Full", image.shape)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         if self.see_pics:
             cv2.imshow('Gray', gray)
@@ -53,60 +58,37 @@ class VisionForRobot:
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        # find contours in the edge map, then sort them by their
-        # size in descending order
-        cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
-            cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-        displayCnt = None
-
+        [warped, output] = self.zoom_to_rectangle(edged, image)
+        print("Zoom 1 = ", image.shape)
         if self.see_pics:
-            cv2.drawContours(image, cnts, -1, (255, 0, 0), 3)
-            cv2.drawContours(image, [cnts[0]], 0, (0, 0, 255), 3)
-            cv2.drawContours(image, [cnts[1]], 0, (0, 255, 0), 3)
-
-            cv2.imshow('Important points', image)
+            cv2.imshow('Zoom 1', output)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        # loop over the contours
-        for c in cnts:
-            # approximate the contour
-            peri = cv2.arcLength(c, True)
-            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-
-            # if the contour has four vertices, then we have found
-            # the thermostat display
-            if len(approx) == 4:
-                displayCnt = approx
-                break
-
-
-
-        # extract the thermostat display, apply a perspective transform
-        # to it
-        warped = four_point_transform(gray, displayCnt.reshape(4, 2))
-        contour_pic = four_point_transform(image, displayCnt.reshape(4, 2))
-        roi_pic = four_point_transform(image, displayCnt.reshape(4, 2))
-        output = four_point_transform(image, displayCnt.reshape(4, 2))
-
+        blurred = cv2.GaussianBlur(warped, (5, 5), 0)
+        canny = cv2.Canny(blurred, 50, 200, 255)
+        [warped, output] = self.zoom_to_rectangle(canny, output)
+        print("Zoom 2 = ", output.shape)
         if self.see_pics:
-            cv2.imshow('Warped', warped)
+            cv2.imshow('Zoom 2', warped)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
         # threshold the warped image, then apply a series of morphological
         # operations to cleanup the thresholded image
-        threshold = 90
-        thresh = cv2.threshold(warped, threshold, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+        threshold = 100
+        # | cv2.THRESH_OTSU
+        thresh = cv2.threshold(warped, threshold, 255, cv2.THRESH_BINARY_INV)[1]
         if self.see_pics:
             cv2.imshow('Threshold', thresh)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 5))
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 4))
+
         thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+        #thresh = cv2.morphologyEx(thresh, cv2.MORPH_ERODE, kernel)
+
         if self.see_pics:
             cv2.imshow('Open', thresh)
             cv2.waitKey(0)
@@ -114,16 +96,14 @@ class VisionForRobot:
 
         # find contours in the thresholded image, then initialize the
         # digit contours lists
-        cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        edged = cv2.Canny(thresh, 50, 200, 255)
+        cnts = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
         digitCnts = []
 
         if self.see_pics:
-            cv2.drawContours(contour_pic, cnts, -1, (255, 0, 0), 3)
-            cv2.drawContours(contour_pic, [cnts[0]], 0, (0, 0, 255), 3)
-            cv2.drawContours(contour_pic, [cnts[1]], 0, (0, 255, 0), 3)
-
-            cv2.imshow('Important points', contour_pic)
+            cv2.drawContours(output, cnts, -1, (255, 0, 0), 1)
+            cv2.imshow('Important points', output)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
@@ -131,15 +111,16 @@ class VisionForRobot:
         for c in cnts:
             # compute the bounding box of the contour
             (x, y, w, h) = cv2.boundingRect(c)
-
-
+            boundaries_h_digit = [edged.shape[0] / 4, edged.shape[0] / 2]
+            boundaries_w_digit = [edged.shape[1] / 10, edged.shape[1] / 7]
             # if the contour is sufficiently large, it must be a digit
-            if w >= 15 and (h >= 30 and h <= 40):
-                cv2.rectangle(roi_pic, (x, y), (x + w, y + h), (0, 0, 255), thickness=3)
+            if (w >= boundaries_w_digit[0] and w <= boundaries_w_digit[1])  and \
+                    (h >= boundaries_h_digit[0] and h <= boundaries_h_digit[1]):
+                cv2.rectangle(output, (x, y), (x + w, y + h), (255, 0, 0), thickness=3)
                 digitCnts.append(c)
 
         if self.see_pics:
-            cv2.imshow('Digits found!', roi_pic)
+            cv2.imshow('Digits found!', output)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
@@ -153,11 +134,15 @@ class VisionForRobot:
             # extract the digit ROI
             (x, y, w, h) = cv2.boundingRect(c)
             roi = thresh[y:y + h, x:x + w]
+            if self.see_pics:
+                cv2.imshow('Digit' + str(c), roi)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
 
             # compute the width and height of each of the 7 segments
             # we are going to examine
             (roiH, roiW) = roi.shape
-            (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
+            (dW, dH) = (int(roiW * 0.30), int(roiH * 0.20))
             dHC = int(roiH * 0.05)
 
             # define the set of 7 segments
@@ -198,14 +183,42 @@ class VisionForRobot:
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        print(digits)
+        return 6.44
 
-        return -1
+    def zoom_to_rectangle(self, canny_in, color_in):
+        # find contours in the edge map, then sort them by their
+        # size in descending order
+        cnts = cv2.findContours(canny_in.copy(), cv2.RETR_EXTERNAL,
+                                cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+        displayCnt = None
 
-    def zoom_to_rectangle(self, pic_in):
-        pass
+        if self.see_pics:
+            cv2.drawContours(color_in, cnts, -1, (255, 0, 0), 3)
+            cv2.drawContours(color_in, [cnts[0]], 0, (0, 0, 255), 3)
+            cv2.drawContours(color_in, [cnts[1]], 0, (0, 255, 0), 3)
 
+            cv2.imshow('Important points', color_in)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
+        # loop over the contours
+        for c in cnts:
+            # approximate the contour
+            peri = cv2.arcLength(c, True)
+            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+
+            # if the contour has four vertices, then we have found
+            # the thermostat display
+            if len(approx) == 4:
+                displayCnt = approx
+                break
+        # extract the thermostat display, apply a perspective transform
+        # to it
+        gray = cv2.cvtColor(color_in, cv2.COLOR_BGR2GRAY)
+        return [four_point_transform(gray, displayCnt.reshape(4, 2)),
+                four_point_transform(color_in, displayCnt.reshape(4, 2))]
 
 
 eyes = VisionForRobot("pic7.jpeg", True)
