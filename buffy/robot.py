@@ -66,6 +66,12 @@ class Robot():
         return "Goal achieved!"
 
 def within_range(a,b):
+    """
+    Check if a is within range of b
+    :param a: float
+    :param b: float
+    :return: bool
+    """
     acc = a*0.01
     lim = (a-acc, a+acc)
     return lim[0] < b < lim[1]
