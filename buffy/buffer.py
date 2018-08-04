@@ -40,4 +40,5 @@ class Buffer():
         self.ph = self.s.read_ph(self.total_hc, n)
 
     def get_ph(self):
-        return self.set_ph() + random.uniform(-0.2, 0.2)
+        self.set_ph()
+        return (self.ph + random.uniform(-0.2, 0.2))
