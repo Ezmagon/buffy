@@ -49,10 +49,8 @@ class Robot():
         Determine if goal pH is reached
         :return:
         """
-        if round(self.observe()) == round(self.g):
-            return True
-        else:
-            return False
+        return within_range(self.observe(), self.g)
+
     def report(self):
         """
         Report internal status to user
@@ -72,3 +70,8 @@ class Robot():
             # Report to the user
             self.report()
         return "Goal achieved!"
+
+def within_range(a,b):
+    acc = a*0.01
+    lim = (a-acc, a+acc)
+    return lim[0] < b < lim[1]
