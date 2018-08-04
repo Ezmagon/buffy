@@ -7,30 +7,24 @@ from buffy.input_window import input_window
 import random
 from buffy.simulation import Simulation
 
-def main(*args):
+def main():
     """
     :param args: goal pH
     Parse input params
 
     :return: None
     """
-    if len(args) != 2:
-        raise Exception("Wrong number of arguments")
 
-    try:
-        goal = float(args[1])
-    except Exception as e:
-        # Raise exception if not a number
-        raise e
-
-    if not goal < 14 or not goal > 1:
-        raise ValueError("Input has to be between 1 and 14")
-
+    # Set the goal pH
     goal = input_window()
+    # Initialize the simulation
     s = Simulation(pka = 7, c = 0.5, v = 1)
+    # Initialize the buffer, using the simulation
     b = Buffer(s)
 
+    # Create buffy
     buffy = Robot(goal, b)
+    # Let buffy do its thing
     result = buffy.run()
 
     print(result)
