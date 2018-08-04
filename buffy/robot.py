@@ -44,12 +44,6 @@ class Robot():
         :return: None
         """
         self.b.add_drip(ab)
-    def at_goal(self):
-        """
-        Determine if goal pH is reached
-        :return:
-        """
-        return within_range(self.observe(), self.g)
 
     def report(self):
         """
@@ -62,7 +56,7 @@ class Robot():
         Integrate robot methods
         :return:
         """
-        while not self.at_goal():
+        while not within_range(self.observe(), self.g):
             # Evaluate what to do
             ab = self.evaluate()
             # Run the action (add acid or base)
