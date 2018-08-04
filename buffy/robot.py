@@ -1,5 +1,5 @@
-import random
-from buffy.computer_vision import VisionForRobot
+#from buffy.computer_vision import VisionForRobot
+
 
 class Robot():
     """
@@ -12,15 +12,15 @@ class Robot():
     def __init__(self, goal, buffer):
         self.g = goal
         self.b = buffer
-        pass
     def observe(self):
-        eyes = VisionForRobot()
-        print ("Eyes recognized", eyes.recognize_numbers())
+
+        #eyes = VisionForRobot()
+        #print ("Eyes recognized", eyes.recognize_numbers())
         """
         Observe the pH
         :return: pH as float
         """
-        return self.b.read_ph()
+        return self.b.ph
     def evaluate(self):
         """
         Evaluate whether to add acid or base
@@ -35,21 +35,21 @@ class Robot():
             ab = 'base'
         # Start with idk random number of drops
         # n_drops = random.randint(1,10) # use later
-        def action():
-            """
-            Input: action parameters
-            Do the action to influence
-            :return: None
-            """
-            self.b.add_drip(ab)
-        return action
 
+        return ab
+    def action(self, ab):
+        """
+        Input: action parameters
+        Do the action to influence
+        :return: None
+        """
+        self.b.add_drip(ab)
     def at_goal(self):
         """
         Determine if goal pH is reached
         :return:
         """
-        if self.observe() == round(self.g):
+        if round(self.observe()) == round(self.g):
             return True
         else:
             return False
@@ -66,9 +66,9 @@ class Robot():
         """
         while not self.at_goal():
             # Evaluate what to do
-            action = self.evaluate()
+            ab = self.evaluate()
             # Run the action (add acid or base)
-            action()
+            self.action(ab)
             # Report to the user
             self.report()
         return "Goal achieved!"

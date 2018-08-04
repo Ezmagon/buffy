@@ -1,18 +1,21 @@
 import math
 
 class Buffer():
-    def __init__(self, pKa=0, Amin=-1, HA=1, pipet_size=0.1):
+    def __init__(self, s, pipet_size=math.pow(10,-6)):
         """
-        The buffer simulates a buffer solution.
+        The buffer contains a buffer solution.
         Bases or acids can be added to find new pH values
         :param pKa:
         :param Amin:
         :param HA:
         """
-        self.pKa = pKa
-        self.Amin = Amin
-        self.HA = HA
+        self.s = s
+        #self.pKa = pKa
+        #self.Amin = Amin
+        #self.HA = HA
         self.pipet_size = pipet_size
+        self.total_hc = 0
+        self.set_ph()
 
     def add_drip(self, base_or_acid):
         """
@@ -21,22 +24,23 @@ class Buffer():
         :return:
         """
         if base_or_acid == "base":
-            self.Amin += self.pipet_size
+            self.total_hc -= self.pipet_size
         elif base_or_acid == "acid":
-            self.HA += self.pipet_size
+            self.total_hc += self.pipet_size
         else:
             print("ERROR")
+        self.set_ph()
 
-    def calculate_pH(self):
-        """
-        :return: pKa + log10(Amin/HA)
-        """
-        return math.pow(self.Amin, 3)
-        # return self.pKa + math.log10(self.Amin / self.HA)
+    #def calculate_pH(self):
+    #    """
+    #    :return: pKa + log10(Amin/HA)
+    #    """
+    #    return math.pow(self.Amin, 3)
+    #    # return self.pKa + math.log10(self.Amin / self.HA)
 
-    def read_ph(self):
+    def set_ph(self):
         """
         Read the pH value
         :return: pH value
         """
-        return self.calculate_pH()
+        self.ph = self.s.read_ph(self.total_hc)
