@@ -1,75 +1,81 @@
 from tkinter import *
+from buffy.buffer import Buffer
 
-def choice_window():
+class Windows():
+    def __init__(self):
+        self.phGoal = -1
+        self.choice = "Nothing"
+        pass
 
-    """this creates the window and title of the window"""
-    window = Tk()                   #dit maakt de orginele window met titel
-    window.geometry("300x150")
-    window.title('Buffy the Buffer Robot')
+    def choice_window(self):
+        def standard():
+            self.choice = "standard"
+            window.destroy()
 
-    a = Frame(window)                #dit maakt de vraag zin
-    a.pack()
-    label = Label(a, text = "Choose start pH:\n")
-    label.grid()
+        def random():
+            self.choice = "random"
+            window.destroy()
 
-    """Three buttons that currently do nothing"""
-    b = Button(window,text='Standard')
-    b.pack(side='top')
-    b = Button(window,text="Random pH")
-    b.pack(side='top')
-    b = Button(window,text="Computer vision")
-    b.pack(side='top')
+        def computer_vision():
+            self.choice = "computervision"
+            window.destroy()
 
-    window.mainloop()
+        """this creates the window and title of the window"""
+        window = Tk()                   #dit maakt de orginele window met titel
+        window.geometry("300x150")
+        window.title('Buffy the Buffer Robot')
 
-def input_window():
+        a = Frame(window)                #dit maakt de vraag zin
+        a.pack()
+        label = Label(a, text = "Choose start pH:\n")
+        label.grid()
 
-    """This creates out user input window and stores the goal pH for later use"""
+        """Three buttons that currently do nothing"""
+        b = Button(window,text='Standard = 7', command=standard)
+        b.pack(side='top')
+        b = Button(window,text="Random pH", command=random)
+        b.pack(side='top')
+        b = Button(window,text="Computer vision", command=computer_vision)
+        b.pack(side='top')
 
-    def user_goal_ph(inp):
-        global goal_ph
-        if inp == "": return True
-        try:
-            goal_ph=float(inp)
-        except ValueError:
-            return False
-        return 1 <= goal_ph <= 14
+        window.mainloop()
 
-
-    window = Tk()                   #dit maakt de orginele window met titel
-    window.geometry("300x100")
-    window.title('Buffy the Buffer Robot')
-
-    a = Frame(window)                #dit maakt de vraag zin
-    a.pack()
-    label = Label(a, text = "What is your goal pH?\n")
-    label.grid()
-
-
-    vcmd = (window.register(user_goal_ph), "%P")    # dit roept de limiterende functie
-                                                    #  op in input window
-    entry = Entry(window, validate = "key", validatecommand=vcmd)
-    entry.pack()
-    entry.focus_set()
-
-    """combines window.destroy command and choice_window"""
-    def func1(evt=None):
-        window.destroy()
-        choice_window()
-
-    """command destroys window and loads choice_window"""
-    b = Button(window,text='Go Buffy!', command=func1)
-    b.pack(side='right')
-    b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
-    b.pack(side='left')
-
-    window.mainloop()
-
-    return goal_ph
+    def input_window(self):
+        """This creates out user input window and stores the goal pH for later use"""
+        def user_goal_ph(inp):
+            self.phGoal
+            if inp == "": return True
+            try:
+                self.phGoal = float(inp)
+            except ValueError:
+                return False
+            return 1 <= self.phGoal <= 14
 
 
-output = input_window()
-print("Output = " + str(output))
+        window = Tk()                   #dit maakt de orginele window met titel
+        window.geometry("300x100")
+        window.title('Buffy the Buffer Robot')
+
+        a = Frame(window)                #dit maakt de vraag zin
+        a.pack()
+        label = Label(a, text = "What is your goal pH?\n")
+        label.grid()
+
+
+        vcmd = (window.register(user_goal_ph), "%P")    # dit roept de limiterende functie
+                                                        #  op in input window
+        entry = Entry(window, validate = "key", validatecommand=vcmd)
+        entry.pack()
+        entry.focus_set()
+
+
+        """command destroys window and loads choice_window"""
+        b = Button(window,text='Go Buffy!', command=window.destroy)
+        b.pack(side='right')
+        b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
+        b.pack(side='left')
+
+        window.mainloop()
 
 
 

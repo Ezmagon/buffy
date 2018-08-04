@@ -1,5 +1,6 @@
 #from buffy.computer_vision import VisionForRobot
-
+import numpy as np
+import math
 
 class Robot():
     """
@@ -12,6 +13,11 @@ class Robot():
     def __init__(self, goal, buffer):
         self.g = goal
         self.b = buffer
+        start_ph = self.b.ph
+        self.mem = [[0, start_ph]] # "memory" of previous ph values and how many drops were added
+    def read_mind(self):
+        return np.array(self.mem)
+
     def observe(self):
 
         #eyes = VisionForRobot()
@@ -19,20 +25,13 @@ class Robot():
         """
         Observe the pH
         Has to observe several times because of noise
+        note: will add noise later
         :return: pH as float
         """
-        n = 10 # noise
-        prev_ph = self.b.ph
-        self.b.set_ph(n)
-        n -= 1
-        obs_ph = self.b.ph
-        while not within_range(obs_ph, prev_ph):
-            prev_ph = obs_ph
-            self.b.set_ph(n)
-            n -= 1
-            obs_ph = self.b.ph
-        print("pH {:.2f} within range!".format(obs_ph))
-        return self.b.ph
+
+        self.b.set_ph()
+        return self.b.get_ph()
+
     def evaluate(self):
         """
         Evaluate whether to add acid or base
@@ -47,15 +46,26 @@ class Robot():
             ab = 'base'
         # Start with idk random number of drops
         # n_drops = random.randint(1,10) # use later
-
-        return ab
-    def action(self, ab):
+        #if len(self.mem) >= 5:
+        #    data = self.read_mind()
+        #    slope = abs(
+        #        np.gradient(
+        #            [data[-5],
+        #             data[-1]]
+        #        )[1][-1][0]
+        #    )
+        #    n_drops = self.determine_drops(slope)
+        #else:
+        n_drops = 4
+        return ab, n_drops
+    def action(self, ab, n_drops):
         """
         Input: action parameters
         Do the action to influence
         :return: None
         """
-        self.b.add_drip(ab)
+        for x in range(n_drops):
+            self.b.add_drip(ab)
 
     def report(self):
         """
@@ -70,12 +80,22 @@ class Robot():
         """
         while not within_range(self.observe(), self.g):
             # Evaluate what to do
-            ab = self.evaluate()
+            ab, n_drops = self.evaluate()
             # Run the action (add acid or base)
-            self.action(ab)
+            self.action(ab, n_drops)
+            # Observe the change
+            new_ph = self.observe()
+            if ab == "acid":
+                total_drops = self.mem[-1][0] + n_drops
+            elif ab == "base":
+                total_drops = self.mem[-1][0] - n_drops
+            # Record the change in memory plus the number of drops
+            self.mem.append(
+                [total_drops, new_ph]
+            )
             # Report to the user
             #self.report()
-        return "Goal achieved!"
+        return
 
 def within_range(a,b):
     """
