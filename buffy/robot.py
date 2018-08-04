@@ -64,8 +64,8 @@ class Robot():
         Do the action to influence
         :return: None
         """
-        for x in range(n_drops):
-            self.b.add_drip(ab)
+        #for x in range(n_drops):
+        self.b.add_drip(ab)
 
     def report(self):
         """
