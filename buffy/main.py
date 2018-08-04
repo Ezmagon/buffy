@@ -20,7 +20,7 @@ def main():
     # Initialize the simulation
     s = Simulation(pka = 7, c = 0.5, v = 1)
     # Initialize the buffer, using the simulation
-    b = Buffer(s)
+    b = Buffer(s, 4)
 
     # Create buffy
     buffy = Robot(goal, b)
@@ -30,4 +30,4 @@ def main():
     print(result)
 
 if __name__ == "__main__":
-    main(*argv)
+    main()
