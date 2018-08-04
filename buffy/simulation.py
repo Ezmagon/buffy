@@ -6,7 +6,7 @@ class Simulation():
     Buffer has two linear domains and a buffering domain in the middle
     At the linear domains, buffer concentrations approach zero so cannot be computed
     """
-    def __init__(self, pka, c, v, h):
+    def __init__(self, pka, c, v, h = math.pow(10, -5)):
         """
         Initialze the buffer with its pka, ph will also be the pka
         initial buffer concentration is also required
@@ -22,6 +22,8 @@ class Simulation():
 
         # Run the simulation to get buffer data
         self.setup()
+    def read_ph(self, total_hc):
+        return np.polyval(self.poly, total_hc)
 
     def reset(self):
         """
@@ -131,3 +133,5 @@ class Simulation():
         # self.data now contains all the data points
         # convert into a numpy array and sort by hc added
         self.data = np.array(sorted(self.data, key = lambda x: x[1]))
+        # Fit a polynomial to the data
+        self.poly = np.polyfit(self.data[:,0], self.data[:,1], deg = 3)
