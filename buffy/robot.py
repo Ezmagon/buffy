@@ -19,19 +19,11 @@ class Robot():
         """
         Observe the pH
         Has to observe several times because of noise
+        note: will add noise later
         :return: pH as float
         """
-        n = 10 # noise
-        prev_ph = self.b.ph
+
         self.b.set_ph(n)
-        n -= 1
-        obs_ph = self.b.ph
-        while not within_range(obs_ph, prev_ph):
-            prev_ph = obs_ph
-            self.b.set_ph(n)
-            n -= 1
-            obs_ph = self.b.ph
-        print("pH {:.2f} within range!".format(obs_ph))
         return self.b.ph
     def evaluate(self):
         """
