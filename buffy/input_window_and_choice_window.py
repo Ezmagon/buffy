@@ -1,5 +1,27 @@
 from tkinter import *
 
+def choice_window():
+
+    """this creates the window and title of the window"""
+    window = Tk()                   #dit maakt de orginele window met titel
+    window.geometry("300x150")
+    window.title('Buffy the Buffer Robot')
+
+    a = Frame(window)                #dit maakt de vraag zin
+    a.pack()
+    label = Label(a, text = "Choose start pH:\n")
+    label.grid()
+
+    """Three buttons that currently do nothing"""
+    b = Button(window,text='Standard')
+    b.pack(side='top')
+    b = Button(window,text="Random pH")
+    b.pack(side='top')
+    b = Button(window,text="Computer vision")
+    b.pack(side='top')
+
+    window.mainloop()
+
 def input_window():
 
     """This creates out user input window and stores the goal pH for later use"""
@@ -30,7 +52,13 @@ def input_window():
     entry.pack()
     entry.focus_set()
 
-    b = Button(window,text='Go Buffy!', command=window.destroy)
+    """combines window.destroy command and choice_window"""
+    def func1(evt=None):
+        window.destroy()
+        choice_window()
+
+    """command destroys window and loads choice_window"""
+    b = Button(window,text='Go Buffy!', command=func1)
     b.pack(side='right')
     b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
     b.pack(side='left')
