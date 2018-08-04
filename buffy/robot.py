@@ -1,4 +1,5 @@
 import random
+from buffy.computer_vision import VisionForRobot
 
 class Robot():
     """
@@ -13,6 +14,8 @@ class Robot():
         self.b = buffer
         pass
     def observe(self):
+        eyes = VisionForRobot()
+        print ("Eyes recognized", eyes.recognize_numbers())
         """
         Observe the pH
         :return: pH as float
