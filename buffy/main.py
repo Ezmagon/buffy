@@ -3,6 +3,7 @@
 from sys import argv
 from buffy.robot import Robot
 from buffy.buffer import Buffer
+from buffy.input_window import input_window
 import random
 from buffy.simulation import Simulation
 
@@ -24,6 +25,8 @@ def main(*args):
 
     if not goal < 14 or not goal > 1:
         raise ValueError("Input has to be between 1 and 14")
+
+    goal = input_window()
     s = Simulation(pka = 7, c = 0.5, v = 1)
     b = Buffer(s)
 
