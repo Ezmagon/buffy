@@ -23,8 +23,20 @@ class Simulation():
 
         # Run the simulation to get buffer data
         self.setup()
-    def read_ph(self, total_hc):
+    def read_ph(self, total_hc, n = 0):
+        """
+        Read the "real" pH from the simulation, but add some random noise
+        :param total_hc: total added acid/base
+        :return: "real" pH
+        """
         return np.polyval(self.poly, total_hc)
+        """ Veel meer werk dan ik dacht...
+        if total_hc < 0: # ph increases
+            noisy_ph = real_ph - 0.01*n*real_ph
+        else:
+            noisy_ph = real_ph + 0.01 * n * real_ph
+        return noisy_ph
+        """
 
     def reset(self):
         """
