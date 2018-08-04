@@ -1,4 +1,5 @@
 import math
+import random
 
 class Buffer():
     def __init__(self, s, pipet_size = 1):
@@ -31,16 +32,12 @@ class Buffer():
             print("ERROR")
         self.set_ph()
 
-    #def calculate_pH(self):
-    #    """
-    #    :return: pKa + log10(Amin/HA)
-    #    """
-    #    return math.pow(self.Amin, 3)
-    #    # return self.pKa + math.log10(self.Amin / self.HA)
-
     def set_ph(self, n = 0):
         """
         Read the pH value
         :return: pH value
         """
         self.ph = self.s.read_ph(self.total_hc, n)
+
+    def get_ph(self):
+        return self.set_ph() + random.uniform(-0.2, 0.2)

@@ -30,7 +30,7 @@ class Robot():
         """
 
         self.b.set_ph()
-        return self.b.ph
+        return self.b.get_ph()
 
     def evaluate(self):
         """
