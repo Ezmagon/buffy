@@ -120,7 +120,7 @@ class Robot():
 
         poly = self.b.s.poly
 
-        real_data = np.array([[x, np.polyval(poly, x)] for x in np.arange(0.2, -1.0, -0.02)])
+        real_data = np.array([[x, np.polyval(poly, x)] for x in np.arange(0.6, -1.1, -0.02)])
 
         # plt.ion()
 
@@ -135,6 +135,8 @@ class Robot():
         y = []
         ax.set_ylim(1, 14)
         ax.hlines([self.b.s.start, self.g], lim[1], lim[0])
+        ax.text(lim[0], self.b.s.start, "Start", ha='left', va='center')
+        ax.text(lim[0], self.g, "Goal", ha='left', va='center')
         plt.show(block=False)
         plt.pause(0.01)
         first = True
