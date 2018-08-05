@@ -18,6 +18,13 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ),
-    install_requires =['numpy', 'pygame', 'tkinter']
-    python_requires >= 3.3
+    install_requires =['numpy', 'tk-tools', 'imutils', 'matplotlib', 'opencv-python', 'IPython'],
+    scripts = [
+        "bin/buffy_run.py"
+    ],
+    package_data = {
+        "buffy":["pic7.jpeg"]
+    }
+
 )
+print("run using \"buffy_run.py\"")

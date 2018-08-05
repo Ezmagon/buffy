@@ -4,6 +4,7 @@ from sys import argv
 from buffy.robot import Robot
 from buffy.buffer import Buffer
 from buffy.input_window_and_choice_window import Windows
+from buffy.computer_vision import VisionForRobot
 import random
 from buffy.simulation import Simulation
 
@@ -19,9 +20,17 @@ def main():
     win.choice_window()
     goal = win.phGoal
     choice = win.choice
+    if choice == "standard":
+        ph_sim = 7
+    elif choice == "random":
+        ph_sim = random.uniform(1, 14)
+    elif choice == "computervision":
+        v = VisionForRobot()
+        ph_sim = v.recognize_numbers()
+
     print("Goal = ", goal, "Choice = ", choice)
     # Initialize the simulation
-    s = Simulation(pka = 7, c = 0.5, v = 1)
+    s = Simulation(pka=7, c=0.5, v=1, start=ph_sim)
     # Initialize the buffer, using the simulation
     b = Buffer(s, 4)
 
@@ -29,7 +38,9 @@ def main():
     buffy = Robot(goal, b)
     # Let buffy do its thing
     result = buffy.run()
-
+    #input("Press key to plot")
+    buffy.plot_robot_graphs()
+    #input("Plot done, press key")
     print(result)
 
 if __name__ == "__main__":

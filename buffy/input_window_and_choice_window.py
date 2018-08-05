@@ -1,10 +1,11 @@
 from tkinter import *
 from buffy.buffer import Buffer
+import sys
 
 class Windows():
     def __init__(self):
-        self.phGoal = -1
-        self.choice = "Nothing"
+        self.phGoal = 1
+        self.choice = "standard"
         pass
 
     def choice_window(self):
@@ -22,19 +23,19 @@ class Windows():
 
         """this creates the window and title of the window"""
         window = Tk()                   #dit maakt de orginele window met titel
-        window.geometry("300x150")
+        window.geometry("300x80")
         window.title('Buffy the Buffer Robot')
 
         a = Frame(window)                #dit maakt de vraag zin
         a.pack()
-        label = Label(a, text = "Choose start pH:\n")
+        label = Label(a, text = "Press to start computer vision!\n")
         label.grid()
 
         """Three buttons that currently do nothing"""
         b = Button(window,text='Standard = 7', command=standard)
         b.pack(side='top')
-        b = Button(window,text="Random pH", command=random)
-        b.pack(side='top')
+        # b = Button(window,text="Random pH", command=random)
+        # b.pack(side='top')
         b = Button(window,text="Computer vision", command=computer_vision)
         b.pack(side='top')
 
@@ -72,7 +73,7 @@ class Windows():
         """command destroys window and loads choice_window"""
         b = Button(window,text='Go Buffy!', command=window.destroy)
         b.pack(side='right')
-        b = Button(window,text="Nevermind, I'm going for lunch!", command=window.destroy)
+        b = Button(window,text="Nevermind, I'm going for lunch!", command=sys.exit)
         b.pack(side='left')
 
         window.mainloop()

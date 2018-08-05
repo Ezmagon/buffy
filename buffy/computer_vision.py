@@ -3,6 +3,7 @@ from imutils.perspective import four_point_transform
 from imutils import contours
 import imutils
 import cv2
+import pkg_resources
 
 DIGITS_LOOKUP = {
     (1, 1, 1, 0, 1, 1, 1): 0,
@@ -21,9 +22,10 @@ DIGITS_LOOKUP = {
     (0, 0, 0, 0, 1, 1, 0): 4
 }
 
+pic7_jpeg = pkg_resources.resource_filename('buffy', 'pic7.jpeg')
 
 class VisionForRobot:
-    def __init__(self, picture_name="pic2", see_pics=False):
+    def __init__(self, picture_name=pic7_jpeg, see_pics=True):
         self.picture_name = picture_name
         self.see_pics = see_pics
         """
@@ -38,7 +40,11 @@ class VisionForRobot:
 
         # pre-process the image by resizing it, converting it to
         # graycale, blurring it, and computing an edge map
-        image = imutils.resize(image, height=500)
+        print(pic7_jpeg)
+        try:
+            image = imutils.resize(image, height=500)
+        except AttributeError as e:
+            raise type(e)(e.message + "image path is: " + pic7_jpeg)
         print("Full", image.shape)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         if self.see_pics:
@@ -220,9 +226,6 @@ class VisionForRobot:
         return [four_point_transform(gray, displayCnt.reshape(4, 2)),
                 four_point_transform(color_in, displayCnt.reshape(4, 2))]
 
-
-eyes = VisionForRobot("pic7.jpeg", True)
-eyes.recognize_numbers()
 
 
 
