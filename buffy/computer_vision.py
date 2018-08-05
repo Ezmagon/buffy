@@ -40,10 +40,11 @@ class VisionForRobot:
 
         # pre-process the image by resizing it, converting it to
         # graycale, blurring it, and computing an edge map
+        print(pic7_jpeg)
         try:
             image = imutils.resize(image, height=500)
         except AttributeError as e:
-            raise type(e)(e.message + "image is type: ", type(image))
+            raise type(e)(e.message + "image path is: " + pic7_jpeg)
         print("Full", image.shape)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         if self.see_pics:
