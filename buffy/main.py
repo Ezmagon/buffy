@@ -38,9 +38,9 @@ def main():
     buffy = Robot(goal, b)
     # Let buffy do its thing
     result = buffy.run()
-    input("Press key to plot")
+    #input("Press key to plot")
     buffy.plot_robot_graphs()
-    input("Plot done, press key")
+    #input("Plot done, press key")
     print(result)
 
 if __name__ == "__main__":

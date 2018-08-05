@@ -1,9 +1,12 @@
 #from buffy.computer_vision import VisionForRobot
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from IPython import display
 import time
 import math
+
 
 class Robot():
     """
@@ -123,22 +126,32 @@ class Robot():
 
         fig, ax = plt.subplots()
         ax.plot(real_data[:, 0], real_data[:, 1], c='C1')[0]
-        lim = ax.get_xlim()
+        margin = np.average(data[:,0])*0.5
+        lim = (np.min(data[:,0])+margin, np.max(data[:,0])-margin)
         ax.set_xlim(lim[1], lim[0])
         x = []
         y = []
+        ax.set_ylim(1, 14)
         ax.hlines([self.b.s.start, self.g], lim[1], lim[0])
         plt.show(block=False)
         plt.pause(0.01)
+        first = True
         for t, p in data:
             x.append(t)
             y.append(p)
             display.clear_output(wait=True)
             display.display(plt.gcf())
             ax.plot(x, y, marker='o', c='C0')
+            if not first:
+                poly_data = generate_poly(x, y, lim)
+                ax.plot(poly_data[:,0], poly_data[:,1], c="C2")
             time.sleep(0.5)
             plt.draw()
             plt.pause(0.001)
+            ax.lines.pop(-1)
+            first = False
+        poly_data = generate_poly(x, y, lim)
+        ax.plot(data[:, 0], data[:, 1], c="C2", zorder=4)
         plt.show()
 
 
@@ -153,3 +166,10 @@ def within_range(a,b):
     acc = a*0.01
     lim = (a-acc, a+acc)
     return lim[0] < b < lim[1]
+
+def generate_poly(x, y, lim):
+    poly = np.polyfit(x, y, deg=3)
+    return np.array([
+        [i, np.polyval(poly, i)]
+        for i in np.arange(*lim, 0.02)
+    ])
