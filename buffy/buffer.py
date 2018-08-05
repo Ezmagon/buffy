@@ -38,7 +38,7 @@ class Buffer():
         :return: pH value
         """
         self.ph = self.s.read_ph(self.total_hc, n)
-        print(self.ph)
+        # print(self.ph)
 
     def get_ph(self):
         self.set_ph()

@@ -1,5 +1,6 @@
 #from buffy.computer_vision import VisionForRobot
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 
 class Robot():
@@ -15,6 +16,8 @@ class Robot():
         self.b = buffer
         start_ph = self.b.ph
         self.mem = [[0, start_ph]] # "memory" of previous ph values and how many drops were added
+        print("Plot!")
+        self.plot_robot_graphs()
 
     def read_mind(self):
         return np.array(self.mem)
@@ -102,6 +105,14 @@ class Robot():
             #self.report()
         print ("Finished! pH = ", self.b.ph)
         return
+
+    def plot_robot_graphs(self):
+        plt.plot(self.b.s.data[:, 0], self.b.s.data[:, 1])
+        plt.xlabel("Added Acid or Base")
+        plt.ylabel("pH")
+        plt.show()
+
+
 
 def within_range(a,b):
     """

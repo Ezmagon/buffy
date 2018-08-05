@@ -32,8 +32,8 @@ class Windows():
         label.grid()
 
         """Three buttons that currently do nothing"""
-        # b = Button(window,text='Standard = 7', command=standard)
-        # b.pack(side='top')
+        b = Button(window,text='Standard = 7', command=standard)
+        b.pack(side='top')
         # b = Button(window,text="Random pH", command=random)
         # b.pack(side='top')
         b = Button(window,text="Computer vision", command=computer_vision)
