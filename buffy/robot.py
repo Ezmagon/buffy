@@ -127,6 +127,8 @@ class Robot():
         fig, ax = plt.subplots()
         ax.plot(real_data[:, 0], real_data[:, 1], c='C1')[0]
         margin = np.average(data[:,0])*0.5
+        if self.g < self.b.s.start:
+            margin *= -1
         lim = (np.min(data[:,0])+margin, np.max(data[:,0])-margin)
         ax.set_xlim(lim[1], lim[0])
         x = []
