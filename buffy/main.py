@@ -28,7 +28,6 @@ def main():
         v = VisionForRobot()
         ph_sim = v.recognize_numbers()
 
-
     print("Goal = ", goal, "Choice = ", choice)
     # Initialize the simulation
     s = Simulation(pka = 7, c = 0.5, v = 1)
