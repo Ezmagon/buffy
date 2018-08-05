@@ -30,7 +30,6 @@ pygame.display.set_caption("Buffy the Buffer Robot")
 green = (0, 255, 0)
 screen.fill(colors["green"])
 
-""""""
 
 class Head():
     def __init__(self):
@@ -94,12 +93,20 @@ class Bubble():
 # newbubble = Bubble()
 pygame.display.update()
 
-""""""
+background_image = pygame.image.load(r'C://Users//NoaLe//Desktop//background2.png').convert()
+# pygame.font.init() # you have to call this at the start,
+# if you want to use this module.
+# myfont = pygame.font.SysFont('Times New Roman', 30)
+# textsurface = myfont.render('Buffy the Buffer Robot', False, (0, 0, 0))
+
 
 y1 = 400
 y2 = 400
+y3 = 247
 width = 10
 height = 10
+width_mouth = 10
+height_mouth = 20
 vel = 5
 
 run = True
@@ -112,19 +119,21 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_DOWN]:
+    if keys[pygame.K_RIGHT]:
         y2 += vel
 
-    if keys[pygame.K_UP]:
-        y2 -= vel
+    if keys[pygame.K_DOWN]:
+        y3 += vel
 
     if keys[pygame.K_LEFT]:
         y1 += vel
 
-    if keys[pygame.K_RIGHT]:
-        y1 -= vel
+    if keys[pygame.K_UP]:
+        y3 -= vel
 
-    screen.fill(colors["green"])
+    screen.blit(background_image, [0, 0])
+    # screen.blit(textsurface,(0,0))
+    # screen.fill(colors["green"])
     # Hat
     pygame.draw.line(screen, colors["robotgrey"], [292, 175], [265, 140], 10)
     # Hat ball
@@ -137,6 +146,10 @@ while run:
     pygame.draw.rect(screen, colors["robotgrey"], [250, 175, 100, 100], 0)
     # Mouth straight
     pygame.draw.line(screen, colors["white"], [290, 250], [310, 250], 10)
+    # Mouth emotion left
+    pygame.draw.rect(screen, colors["white"], [285, y3, width_mouth, height_mouth], 0)
+    # Mouth emotion right
+    pygame.draw.rect(screen, colors["white"], [310, y3, width_mouth, height_mouth], 0)
     # right eye
     pygame.draw.circle(screen, colors["lightblue"], [325, 200], 10, 0)
     # left eye
@@ -148,9 +161,9 @@ while run:
     # Neck
     pygame.draw.rect(screen, colors["black"], [292, 275, 16, 25], 0)
     # right leg
-    pygame.draw.line(screen, colors["darkestgrey"], [350, 560], [350, 600], 30)
+    pygame.draw.line(screen, colors["darkestgrey"], [350, 560], [350, 590], 30)
     # left leg
-    pygame.draw.line(screen, colors["darkestgrey"], [250, 560], [250, 600], 30)
+    pygame.draw.line(screen, colors["darkestgrey"], [250, 560], [250, 590], 30)
     # body
     pygame.draw.rect(screen, colors["robotgrey"], [200, 300, 200, 260], 0)
     # right knee

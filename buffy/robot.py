@@ -15,6 +15,7 @@ class Robot():
         self.b = buffer
         start_ph = self.b.ph
         self.mem = [[0, start_ph]] # "memory" of previous ph values and how many drops were added
+
     def read_mind(self):
         return np.array(self.mem)
 
@@ -58,14 +59,15 @@ class Robot():
         #else:
         n_drops = 4
         return ab, n_drops
+
     def action(self, ab, n_drops):
         """
         Input: action parameters
         Do the action to influence
         :return: None
         """
-        for x in range(n_drops):
-            self.b.add_drip(ab)
+        #for x in range(n_drops):
+        self.b.add_drip(ab)
 
     def report(self):
         """
@@ -73,6 +75,7 @@ class Robot():
         :return:
         """
         print(self.observe())
+
     def run(self):
         """
         Integrate robot methods

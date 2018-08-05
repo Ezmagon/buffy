@@ -23,7 +23,7 @@ DIGITS_LOOKUP = {
 
 
 class VisionForRobot:
-    def __init__(self, picture_name="pic2", see_pics=False):
+    def __init__(self, picture_name="pic7.jpeg", see_pics=True):
         self.picture_name = picture_name
         self.see_pics = see_pics
         """
@@ -220,9 +220,6 @@ class VisionForRobot:
         return [four_point_transform(gray, displayCnt.reshape(4, 2)),
                 four_point_transform(color_in, displayCnt.reshape(4, 2))]
 
-
-eyes = VisionForRobot("pic7.jpeg", True)
-eyes.recognize_numbers()
 
 
 
