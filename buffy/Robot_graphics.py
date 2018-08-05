@@ -1,9 +1,6 @@
 from graphics import *
 import pygame
-import sys
-import random
-
-pygame.init()
+from scipy.io import wavfile  # get the api
 
 # Define some colors into a dictionary
 # colorName = (r,g,b)
@@ -23,86 +20,86 @@ colors = {
     "darkestgrey": (96, 96, 96)
 }
 
+# screen parameters
 screen_width = 600
 screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 pygame.display.set_caption("Buffy the Buffer Robot")
-green = (0, 255, 0)
-screen.fill(colors["green"])
-
+background_image = pygame.image.load(r'C://Users//NoaLe//Desktop//background2.png').convert()
+# screen.fill(colors["green"])    #no background colours because of image
+'''
 
 class Head():
-    def __init__(self):
-        # Head
-        pygame.draw.rect(screen, colors["black"], [250, 175, 100, 100], 0)
-        # self.image = pygame.image.load(INSERT PATH)
-
+    def __init__(self): 
+    # Head
+        pygame.draw.rect(screen, colors["black"], [250,175,100,100], 0)
+        #self.image = pygame.image.load(INSERT PATH) 
 
 class Neck():
+    def __init__(self): 
+    # Neck
+        pygame.draw.rect(screen, colors["black"], [292,275,16,25], 0)
+
+class Arms(): 
     def __init__(self):
-        # Neck
-        pygame.draw.rect(screen, colors["black"], [292, 275, 16, 25], 0)
+        #right arm
+        pygame.draw.line(screen, colors["black"], [400,350], [325,390], 20)
+        #left arm 
+        pygame.draw.line(screen, colors["black"], [200,350], [275,390], 20)
+        #right arm
+        #pygame.draw.line(screen, colors["black"], [400,350], [450,380], 20)
+        #left arm 
+        #pygame.draw.line(screen, colors["black"], [200,350], [150,380], 20)
 
-
-class Arms():
+class Legs(): 
     def __init__(self):
-        # right arm
-        pygame.draw.line(screen, colors["black"], [400, 350], [325, 390], 20)
-        # left arm
-        pygame.draw.line(screen, colors["black"], [200, 350], [275, 390], 20)
-        # right arm
-        # pygame.draw.line(screen, colors["black"], [400,350], [450,380], 20)
-        # left arm
-        # pygame.draw.line(screen, colors["black"], [200,350], [150,380], 20)
-
-
-class Legs():
-    def __init__(self):
-        # right leg
-        pygame.draw.line(screen, colors["black"], [350, 560], [375, 600], 20)
-        # left leg
-        pygame.draw.line(screen, colors["black"], [250, 560], [225, 600], 20)
-
+        #right leg
+        pygame.draw.line(screen, colors["black"], [350,560], [375,600], 20)
+        #left leg
+        pygame.draw.line(screen, colors["black"], [250,560], [225,600], 20)
 
 class Body():
-    def __init__(self):
-        # Body
-        pygame.draw.rect(screen, colors["red"], [200, 300, 200, 260], 0)
-
+    def __init__(self): 
+    # Body
+        pygame.draw.rect(screen, colors["red"], [200,300,200,260], 0)
 
 class Testtube():
     def __init__(self, c):
-        # Testtube
+    #Testtube
         self.color_testtube = colors[c]
-        pygame.draw.rect(screen, self.color_testtube, [275, 400, 50, 120], 0)
-        # pygame.draw.rect(screen, self.color_testtube, [450,480,50,120], 0)
-
+        pygame.draw.rect(screen, self.color_testtube, [275,400,50,120], 0)
+        #pygame.draw.rect(screen, self.color_testtube, [450,480,50,120], 0)
 
 class Bubble():
-    def __init__(self):
-        # Bubble
-        pygame.draw.rect(screen, colors["pink"], [275, 400, 5, 5], 0)
+  def __init__(self): 
+    # Bubble 
+        pygame.draw.rect(screen, colors["pink"], [275,400,5,5], 0)
 
 
-# newbody = Body()
-# newhead = Head()
-# newarms = Arms()
-# newlegs = Legs()
-# newneck = Neck()
-# newtube  = Testtube("blue")
-# newbubble = Bubble()
+#newbody = Body()
+#newhead = Head()
+#newarms = Arms()
+#newlegs = Legs()
+#newneck = Neck()
+#newtube  = Testtube("blue")
+#newbubble = Bubble()
+
+'''
+
 pygame.display.update()
 
-background_image = pygame.image.load(r'C://Users//NoaLe//Desktop//background2.png').convert()
-# pygame.font.init() # you have to call this at the start,
-# if you want to use this module.
-# myfont = pygame.font.SysFont('Times New Roman', 30)
-# textsurface = myfont.render('Buffy the Buffer Robot', False, (0, 0, 0))
+"""If I want to add a title use this
+#pygame.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+#myfont = pygame.font.SysFont('Times New Roman', 30)
+#textsurface = myfont.render('Buffy the Buffer Robot', False, (0, 0, 0))"""
 
+pygame.init()
 
+# some parameters for body parts
 y1 = 400
 y2 = 400
-y3 = 247
+y3 = 233
 width = 10
 height = 10
 width_mouth = 10
@@ -111,7 +108,10 @@ vel = 5
 
 run = True
 while run:
-    pygame.time.delay(100)
+    """ This doesn't work right now because of the sound,
+    but it's very cool. Need to get them working together
+
+    #pygame.time.delay(100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -130,6 +130,7 @@ while run:
 
     if keys[pygame.K_UP]:
         y3 -= vel
+"""
 
     screen.blit(background_image, [0, 0])
     # screen.blit(textsurface,(0,0))
@@ -193,5 +194,24 @@ while run:
     # left drop
     pygame.draw.rect(screen, colors["yellow"], [280, y2, width, height], 0)
     pygame.display.update()
+
+    """Sound clip"""
+
+
+    def playmusic(filename):
+        pygame.mixer.init()
+        pygame.mixer.music.load(filename)  # Loading voice
+        print("Playing " + filename + "!")
+        pygame.mixer.music.play()
+
+
+    def run():
+        audio_file = r'C://Users//NoaLe//Desktop//buffy.wav'
+
+        playmusic(audio_file)
+        showimage(audio_file)
+
+
+    run()
 
 pygame.quit()
