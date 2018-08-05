@@ -7,6 +7,8 @@ from buffy.input_window_and_choice_window import Windows
 from buffy.computer_vision import VisionForRobot
 import random
 from buffy.simulation import Simulation
+#import threading
+#from buffy.Robot_graphics import robot_run
 
 def main():
     """
@@ -27,6 +29,9 @@ def main():
     elif choice == "computervision":
         v = VisionForRobot()
         ph_sim = v.recognize_numbers()
+
+    #gfx_thread = threading.Thread(target=robot_run)
+    #gfx_thread.start()
 
     print("Goal = ", goal, "Choice = ", choice)
     # Initialize the simulation
