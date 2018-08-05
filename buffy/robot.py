@@ -89,9 +89,11 @@ class Robot():
             # Observe the change
             new_ph = self.observe()
             if ab == "acid":
-                total_drops = self.mem[-1][0] + n_drops
+                #total_drops = self.mem[-1][0] - self.b.total_hc
+                total_drops = self.b.total_hc
             elif ab == "base":
-                total_drops = self.mem[-1][0] - n_drops
+                #total_drops = self.mem[-1][0] + self.b.total_hc
+                total_drops = self.b.total_hc
             # Record the change in memory plus the number of drops
             self.mem.append(
                 [total_drops, new_ph]

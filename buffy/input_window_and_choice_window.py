@@ -1,5 +1,4 @@
 from tkinter import *
-from buffy.buffer import Buffer
 
 class Windows():
     def __init__(self):

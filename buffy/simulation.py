@@ -7,13 +7,14 @@ class Simulation():
     Buffer has two linear domains and a buffering domain in the middle
     At the linear domains, buffer concentrations approach zero so cannot be computed
     """
-    def __init__(self, pka, c, v, h = math.pow(10, -5)):
+    def __init__(self, pka, c, v, start, h = math.pow(10, -2)):
         """
         Initialze the buffer with its pka, ph will also be the pka
         initial buffer concentration is also required
         self.data contains buffer data
         """
         # Initialize variables
+        self.start = start
         self.ph = pka
         self.pka = pka
         self.c = c #Keep concentration for resetting
@@ -107,6 +108,18 @@ class Simulation():
         self.data.append(
             (self.total_hc, self.ph)
         )
+    def shift(self, start):
+        """
+        look for ph value
+        find x shift
+        shift all x values by this shift
+        :param start:
+        :return:
+        """
+        i = find_val(self.data, start)
+        sh = self.data[:,0][i]
+        self.data[:,0] -= sh
+
     def setup(self):
         """
         Compute buffer pH for both sides, starting at the pKa
@@ -147,4 +160,8 @@ class Simulation():
         # convert into a numpy array and sort by hc added
         self.data = np.array(sorted(self.data, key = lambda x: x[1]))
         # Fit a polynomial to the data
+        self.shift(self.start)
         self.poly = np.polyfit(self.data[:,0], self.data[:,1], deg = 3)
+
+def find_val(array, target):
+    return np.argmin(np.abs(np.subtract(array[:,1], target)))

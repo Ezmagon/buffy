@@ -30,7 +30,7 @@ def main():
 
     print("Goal = ", goal, "Choice = ", choice)
     # Initialize the simulation
-    s = Simulation(pka = 7, c = 0.5, v = 1)
+    s = Simulation(pka=7, c=0.5, v=1, start=ph_sim)
     # Initialize the buffer, using the simulation
     b = Buffer(s, 4)
 

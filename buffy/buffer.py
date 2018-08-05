@@ -14,7 +14,7 @@ class Buffer():
         #self.pKa = pKa
         #self.Amin = Amin
         #self.HA = HA
-        self.pipet_size = pipet_size * math.pow(10,-6)
+        self.pipet_size = pipet_size * math.pow(10,-2)
         self.total_hc = 0
         self.set_ph()
 
