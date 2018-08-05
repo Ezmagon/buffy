@@ -1,6 +1,8 @@
 #from buffy.computer_vision import VisionForRobot
 import numpy as np
 import matplotlib.pyplot as plt
+from IPython import display
+import time
 import math
 
 class Robot():
@@ -16,8 +18,6 @@ class Robot():
         self.b = buffer
         start_ph = self.b.ph
         self.mem = [[0, start_ph]] # "memory" of previous ph values and how many drops were added
-        print("Plot!")
-        self.plot_robot_graphs()
 
     def read_mind(self):
         return np.array(self.mem)
@@ -107,9 +107,38 @@ class Robot():
         return
 
     def plot_robot_graphs(self):
-        plt.plot(self.b.s.data[:, 0], self.b.s.data[:, 1])
-        plt.xlabel("Added Acid or Base")
-        plt.ylabel("pH")
+        # plt.plot(self.b.s.data[:, 0], self.b.s.data[:, 1])
+        # plt.xlabel("Added Acid or Base")
+        # plt.ylabel("pH")
+        # plt.show(block=False)
+        #
+
+        data = self.read_mind()
+
+        poly = self.b.s.poly
+
+        real_data = np.array([[x, np.polyval(poly, x)] for x in np.arange(0.2, -1.0, -0.02)])
+
+        # plt.ion()
+
+        fig, ax = plt.subplots()
+        ax.plot(real_data[:, 0], real_data[:, 1], c='C1')[0]
+        lim = ax.get_xlim()
+        ax.set_xlim(lim[1], lim[0])
+        x = []
+        y = []
+        ax.hlines([self.b.s.start, self.g], lim[1], lim[0])
+        plt.show(block=False)
+        plt.pause(0.01)
+        for t, p in data:
+            x.append(t)
+            y.append(p)
+            display.clear_output(wait=True)
+            display.display(plt.gcf())
+            ax.plot(x, y, marker='o', c='C0')
+            time.sleep(0.5)
+            plt.draw()
+            plt.pause(0.001)
         plt.show()
 
 
@@ -121,6 +150,6 @@ def within_range(a,b):
     :param b: float
     :return: bool
     """
-    acc = a*0.00001
+    acc = a*0.01
     lim = (a-acc, a+acc)
     return lim[0] < b < lim[1]
