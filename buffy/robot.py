@@ -66,8 +66,8 @@ class Robot():
         Do the action to influence
         :return: None
         """
-        #for x in range(n_drops):
-        self.b.add_drip(ab)
+        for x in range(n_drops):
+            self.b.add_drip(ab)
 
     def report(self):
         """
@@ -100,6 +100,7 @@ class Robot():
             )
             # Report to the user
             #self.report()
+        print ("Finished! pH = ", self.b.ph)
         return
 
 def within_range(a,b):
@@ -109,6 +110,6 @@ def within_range(a,b):
     :param b: float
     :return: bool
     """
-    acc = a*0.01
+    acc = a*0.00001
     lim = (a-acc, a+acc)
     return lim[0] < b < lim[1]
