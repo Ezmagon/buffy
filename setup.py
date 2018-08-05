@@ -21,7 +21,10 @@ setuptools.setup(
     install_requires =['numpy', 'tk-tools', 'imutils', 'matplotlib', 'opencv-python', 'IPython'],
     scripts = [
         "bin/buffy_run.py"
-    ]
+    ],
+    package_data = {
+        "buffy":["pic7.jpeg"]
+    }
 
 )
 print("run using \"buffy_run.py\"")
