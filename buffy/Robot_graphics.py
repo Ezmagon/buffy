@@ -1,4 +1,4 @@
-from graphics import *
+#from graphics import *
 import pygame
 from scipy.io import wavfile  # get the api
 
@@ -106,112 +106,113 @@ width_mouth = 10
 height_mouth = 20
 vel = 5
 
-run = True
-while run:
-    """ This doesn't work right now because of the sound,
-    but it's very cool. Need to get them working together
+def robot_run():
+    run = True
+    while run:
+        """ This doesn't work right now because of the sound,
+        but it's very cool. Need to get them working together
+    
+        #pygame.time.delay(100)
+    
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+    
+        keys = pygame.key.get_pressed()
+    
+        if keys[pygame.K_RIGHT]:
+            y2 += vel
+    
+        if keys[pygame.K_DOWN]:
+            y3 += vel
+    
+        if keys[pygame.K_LEFT]:
+            y1 += vel
+    
+        if keys[pygame.K_UP]:
+            y3 -= vel
+    """
 
-    #pygame.time.delay(100)
+        screen.blit(background_image, [0, 0])
+        # screen.blit(textsurface,(0,0))
+        # screen.fill(colors["green"])
+        # Hat
+        pygame.draw.line(screen, colors["robotgrey"], [292, 175], [265, 140], 10)
+        # Hat ball
+        pygame.draw.circle(screen, colors["darkestgrey"], [265, 140], 7, 0)
+        # right ear
+        # pygame.draw.line(screen, colors["darkestgrey"], [350,190], [375,190], 10)
+        # left ear
+        # pygame.draw.line(screen, colors["darkestgrey"], [250,190], [225,190], 10)
+        # Head
+        pygame.draw.rect(screen, colors["robotgrey"], [250, 175, 100, 100], 0)
+        # Mouth straight
+        pygame.draw.line(screen, colors["white"], [290, 250], [310, 250], 10)
+        # Mouth emotion left
+        pygame.draw.rect(screen, colors["white"], [285, y3, width_mouth, height_mouth], 0)
+        # Mouth emotion right
+        pygame.draw.rect(screen, colors["white"], [310, y3, width_mouth, height_mouth], 0)
+        # right eye
+        pygame.draw.circle(screen, colors["lightblue"], [325, 200], 10, 0)
+        # left eye
+        pygame.draw.circle(screen, colors["lightblue"], [275, 200], 10, 0)
+        # right pupil
+        pygame.draw.circle(screen, colors["black"], [325, 200], 4, 0)
+        # left pupil
+        pygame.draw.circle(screen, colors["black"], [275, 200], 4, 0)
+        # Neck
+        pygame.draw.rect(screen, colors["black"], [292, 275, 16, 25], 0)
+        # right leg
+        pygame.draw.line(screen, colors["darkestgrey"], [350, 560], [350, 590], 30)
+        # left leg
+        pygame.draw.line(screen, colors["darkestgrey"], [250, 560], [250, 590], 30)
+        # body
+        pygame.draw.rect(screen, colors["robotgrey"], [200, 300, 200, 260], 0)
+        # right knee
+        pygame.draw.circle(screen, colors["darkgrey"], [350, 560], 15, 0)
+        # left knee
+        pygame.draw.circle(screen, colors["darkgrey"], [250, 560], 15, 0)
+        # testtube outer
+        pygame.draw.rect(screen, colors["white"], [268, 392, 64, 120], 0)
+        # testtube
+        pygame.draw.rect(screen, colors["blue"], [270, 390, 60, 120], 0)
+        # testtube bottom
+        ###
+        # right arm
+        pygame.draw.line(screen, colors["darkestgrey"], [400, 350], [325, 390], 23)
+        # left arm
+        pygame.draw.line(screen, colors["darkestgrey"], [195, 330], [195, 360], 23)
+        # right upperarm
+        pygame.draw.line(screen, colors["darkestgrey"], [405, 330], [405, 360], 17)
+        # left upperarm
+        pygame.draw.line(screen, colors["darkestgrey"], [200, 350], [275, 390], 17)
+        # right shoulder
+        pygame.draw.circle(screen, colors["darkgrey"], [400, 320], 20, 0)
+        # left shoulder
+        pygame.draw.circle(screen, colors["darkgrey"], [200, 320], 20, 0)
+        # right drop
+        pygame.draw.rect(screen, colors["purple"], [313, y1, width, height], 0)
+        # left drop
+        pygame.draw.rect(screen, colors["yellow"], [280, y2, width, height], 0)
+        pygame.display.update()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_RIGHT]:
-        y2 += vel
-
-    if keys[pygame.K_DOWN]:
-        y3 += vel
-
-    if keys[pygame.K_LEFT]:
-        y1 += vel
-
-    if keys[pygame.K_UP]:
-        y3 -= vel
-"""
-
-    screen.blit(background_image, [0, 0])
-    # screen.blit(textsurface,(0,0))
-    # screen.fill(colors["green"])
-    # Hat
-    pygame.draw.line(screen, colors["robotgrey"], [292, 175], [265, 140], 10)
-    # Hat ball
-    pygame.draw.circle(screen, colors["darkestgrey"], [265, 140], 7, 0)
-    # right ear
-    # pygame.draw.line(screen, colors["darkestgrey"], [350,190], [375,190], 10)
-    # left ear
-    # pygame.draw.line(screen, colors["darkestgrey"], [250,190], [225,190], 10)
-    # Head
-    pygame.draw.rect(screen, colors["robotgrey"], [250, 175, 100, 100], 0)
-    # Mouth straight
-    pygame.draw.line(screen, colors["white"], [290, 250], [310, 250], 10)
-    # Mouth emotion left
-    pygame.draw.rect(screen, colors["white"], [285, y3, width_mouth, height_mouth], 0)
-    # Mouth emotion right
-    pygame.draw.rect(screen, colors["white"], [310, y3, width_mouth, height_mouth], 0)
-    # right eye
-    pygame.draw.circle(screen, colors["lightblue"], [325, 200], 10, 0)
-    # left eye
-    pygame.draw.circle(screen, colors["lightblue"], [275, 200], 10, 0)
-    # right pupil
-    pygame.draw.circle(screen, colors["black"], [325, 200], 4, 0)
-    # left pupil
-    pygame.draw.circle(screen, colors["black"], [275, 200], 4, 0)
-    # Neck
-    pygame.draw.rect(screen, colors["black"], [292, 275, 16, 25], 0)
-    # right leg
-    pygame.draw.line(screen, colors["darkestgrey"], [350, 560], [350, 590], 30)
-    # left leg
-    pygame.draw.line(screen, colors["darkestgrey"], [250, 560], [250, 590], 30)
-    # body
-    pygame.draw.rect(screen, colors["robotgrey"], [200, 300, 200, 260], 0)
-    # right knee
-    pygame.draw.circle(screen, colors["darkgrey"], [350, 560], 15, 0)
-    # left knee
-    pygame.draw.circle(screen, colors["darkgrey"], [250, 560], 15, 0)
-    # testtube outer
-    pygame.draw.rect(screen, colors["white"], [268, 392, 64, 120], 0)
-    # testtube
-    pygame.draw.rect(screen, colors["blue"], [270, 390, 60, 120], 0)
-    # testtube bottom
-    ###
-    # right arm
-    pygame.draw.line(screen, colors["darkestgrey"], [400, 350], [325, 390], 23)
-    # left arm
-    pygame.draw.line(screen, colors["darkestgrey"], [195, 330], [195, 360], 23)
-    # right upperarm
-    pygame.draw.line(screen, colors["darkestgrey"], [405, 330], [405, 360], 17)
-    # left upperarm
-    pygame.draw.line(screen, colors["darkestgrey"], [200, 350], [275, 390], 17)
-    # right shoulder
-    pygame.draw.circle(screen, colors["darkgrey"], [400, 320], 20, 0)
-    # left shoulder
-    pygame.draw.circle(screen, colors["darkgrey"], [200, 320], 20, 0)
-    # right drop
-    pygame.draw.rect(screen, colors["purple"], [313, y1, width, height], 0)
-    # left drop
-    pygame.draw.rect(screen, colors["yellow"], [280, y2, width, height], 0)
-    pygame.display.update()
-
-    """Sound clip"""
-
-
-    def playmusic(filename):
-        pygame.mixer.init()
-        pygame.mixer.music.load(filename)  # Loading voice
-        print("Playing " + filename + "!")
-        pygame.mixer.music.play()
+        """Sound clip"""
 
 
-    def run():
-        audio_file = r'C://Users//NoaLe//Desktop//buffy.wav'
+        def playmusic(filename):
+            pygame.mixer.init()
+            pygame.mixer.music.load(filename)  # Loading voice
+            print("Playing " + filename + "!")
+            pygame.mixer.music.play()
 
-        playmusic(audio_file)
-        showimage(audio_file)
+
+        def run():
+            audio_file = r'C://Users//NoaLe//Desktop//buffy.wav'
+
+            playmusic(audio_file)
+            showimage(audio_file)
 
 
-    run()
+        run()
 
-pygame.quit()
+    pygame.quit()
