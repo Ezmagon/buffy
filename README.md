@@ -8,7 +8,7 @@ By: Bram Wiggers, Owen Terpstra, Matthijs Tadema, Noa Leijdesdorff
 Install using `pip install git+https://github.com/Ezmagon/buffy`
 
 # Run
-run the script `buffy-run.py` from PATH
+run the script `buffy-run.py` from PATH to run the demo 
 
 # Disclaimer
 The project in its current state is a proof of concept and not yet a working prototype.
