@@ -1,3 +1,3 @@
-from buffy.demo import main
+from demo.demo import main
 
 main()
