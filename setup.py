@@ -23,7 +23,7 @@ setuptools.setup(
         "bin/buffy_run.py"
     ],
     package_data = {
-        "buffy":["pic7.jpeg"]
+        "buffy":["data/pic7.jpeg"]
     },
     #python_requires = '~=3.5'
 
