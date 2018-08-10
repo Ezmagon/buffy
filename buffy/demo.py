@@ -9,6 +9,7 @@ import random
 from buffy.simulation import Simulation
 #import threading
 #from buffy.Robot_graphics import robot_run
+from buffy.graphs import plot_robot_graphs
 
 def main():
     """
@@ -44,7 +45,7 @@ def main():
     # Let buffy do its thing
     result = buffy.run()
     #input("Press key to plot")
-    buffy.plot_robot_graphs()
+    plot_robot_graphs(buffy)
     #input("Plot done, press key")
     print(result)
 
