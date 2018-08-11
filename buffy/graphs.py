@@ -1,25 +1,28 @@
-import numpy as np
+"""
+Contains only graphing functions to be used throughout the project
+"""
+# Custom
+from buffy.tools import generate_poly
+# Builtin
+import time
+# Graphics
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from IPython import display
-import time
-
+# Math
+import numpy as np
 
 def plot_robot_graphs(buffy):
-    # plt.plot(self.b.s.data[:, 0], self.b.s.data[:, 1])
-    # plt.xlabel("Added Acid or Base")
-    # plt.ylabel("pH")
-    # plt.show(block=False)
-    #
-
+    """
+    Plots the behaviour of the buffer curve in "real" time
+    :param buffy:
+    :return:
+    """
     data = buffy.read_mind()
-
+    # Get the real polynomial for plotting
     poly = buffy.b.s.poly
-
     real_data = np.array([[x, np.polyval(poly, x)] for x in np.arange(0.6, -1.1, -0.02)])
-
-    # plt.ion()
 
     fig, ax = plt.subplots()
     ax.plot(real_data[:, 0], real_data[:, 1], c='C1')[0]

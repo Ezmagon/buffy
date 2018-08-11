@@ -1,9 +1,9 @@
-#!/opt/anaconda/bin/python
+#!/usr/bin/env python3
 
 from sys import argv
 from buffy.robot import Robot
 from buffy.buffer import Buffer
-from buffy.input_window_and_choice_window import Windows
+from buffy.interface import Windows
 from buffy.computer_vision import VisionForRobot
 import random
 from buffy.simulation import Simulation

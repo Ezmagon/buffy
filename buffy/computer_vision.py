@@ -23,7 +23,7 @@ DIGITS_LOOKUP = {
     (0, 0, 0, 0, 1, 1, 0): 4
 }
 
-pic7_jpeg = pkg_resources.resource_filename('buffy', 'pic7.jpeg')
+pic7_jpeg = pkg_resources.resource_filename('buffy', '../data/pic7.jpeg')
 
 class VisionForRobot:
     def __init__(self, picture_name=pic7_jpeg, see_pics=True):
@@ -49,7 +49,7 @@ class VisionForRobot:
         try:
             image = imutils.resize(image, height=500)
         except AttributeError as e:
-            raise type(e)(e.message + "image path is: " + pic7_jpeg)
+            raise type(e)("image path is: " + pic7_jpeg)
         print("Full", image.shape)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         if self.see_pics:

@@ -7,24 +7,65 @@ class Simulation():
     Buffer has two linear domains and a buffering domain in the middle
     At the linear domains, buffer concentrations approach zero so cannot be computed
     """
-    def __init__(self, pka, c, v, start, h = math.pow(10, -2)):
+    def __init__(self, pka, c, v, start):
         """
         Initialze the buffer with its pka, ph will also be the pka
         initial buffer concentration is also required
         self.data contains buffer data
+        :param pka: the pka of the buffer
+        :param c: The buffer concentration
+        :param v: The buffer volume
         """
-        # Initialize variables
+        # Initialize attributes
         self.start = start
         self.ph = pka
         self.pka = pka
-        self.c = c #Keep concentration for resetting
-        self.v = v #volume
-        self.h = h #number of H+ moles to add
+        self.c = c # Keep concentration for resetting
+        self.v = v # volume
+        self.drop_v = 0.05
+
+        # Initialize acid properties
+        self.ac = random.uniform(3, 10) # Acid concentration
+
+        # Initialize base properties
+        self.bc = random.uniform(3, 10) # Base concentration
+
+        # Should be moved
         self.data = [] # initialize data, will be converted to numpy by setup()
 
         # Run the simulation to get buffer data
         self.setup()
-    def read_ph(self, total_hc, n = 0):
+
+        # Buffer simulation keeps track of total added or subtracted H+
+        self.h = 0
+
+
+    def add_drop(self, ab, n):
+        """
+        Adds a drop to the simulation, changing the current ph
+        :param ab:  'acid' or 'base'
+        :param n: number of drops to add
+        :return:
+        """
+        v = self.drop_v * random.uniform(0.95, 1.05)
+        # Initialize drop with acid/base, concentration and volume
+        drop = Drop(ab, self.ac, v)
+        # Now we have the total number of moles to add
+        # The added final concentration will be:
+        self.v += v
+        self.total_hc += drop.m / self.v
+
+        # Now calculate the new pH
+        self.ph = get_ph()
+
+
+    def set_ph(self):
+        """
+
+        :return:
+        """
+
+    def read_ph(self, total_hc):
         """
         Read the "real" pH from the simulation, but add some random noise
         :param total_hc: total added acid/base
@@ -45,8 +86,8 @@ class Simulation():
         :return:
         """
         self.ph = self.pka
-        self.a = self.c #acid (HA) molar
-        self.b = self.c #base (A-) molar
+        self.buff_a = self.c #acid (HA) molar
+        self.buff_b = self.c #base (A-) molar
         self.total_hc = 0
 
     def rec_hc(self, hc):
@@ -162,6 +203,15 @@ class Simulation():
         # Fit a polynomial to the data
         self.shift(self.start)
         self.poly = np.polyfit(self.data[:,0], self.data[:,1], deg = 3)
+
+class Drop():
+    def __init__(self, ab, c, v):
+        self.ab = ab # acid/base
+        self.c = c # concentration
+        self.v = v # volume
+        self.m = c * v # total moles
+        if ab == 'base':
+            self.m *= -1
 
 def find_val(array, target):
     return np.argmin(np.abs(np.subtract(array[:,1], target)))

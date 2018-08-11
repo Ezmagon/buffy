@@ -1,45 +1,58 @@
+# Custom
+from buffy.simulation import Simulation
+# Builtin
 import math
 import random
 
 class Buffer():
-    def __init__(self, s, pipet_size = 1):
+    def __init__(self, sim = True):
         """
-        The buffer contains a buffer solution.
-        Bases or acids can be added to find new pH values
-        :param pKa:
-        :param Amin:
-        :param HA:
+        The Buffer class contains an implementation for the buffer solution.
+        Interacts with the underlying implementation for the buffer
         """
-        self.s = s
-        #self.pKa = pKa
-        #self.Amin = Amin
-        #self.HA = HA
-        self.pipet_size = pipet_size * math.pow(10,-3)
-        self.total_hc = 0
-        self.set_ph()
+        if sim:
+            # Initialize the simulation with a random pka between 4 and 9
+            # Random concentration of acid and conjugated base between 0.2 M and 1.0 M
+            # Random buffer volume between 0.2 L and 5 L
+            self.s = Simulation(
+                pka = random.randint(4, 9),
+                c   = random.uniform(0.2, 1.0),
+                v   = random.uniform(0.2, 5)
+            )
+            self.read_ph = self.read_ph_sim
+        else:
+            # Initialize real buffer, not implemented yet
+            raise NotImplementedError("Real buffer is not implemented yet")
+            self.read_ph = self.read_ph_real
 
-    def add_drip(self, base_or_acid):
+        # Initialize the total acid added and read the starting ph from the buffer
+        self.total_hc = 0
+
+    def read_ph_sim(self):
+        """
+        Read the pH from a simulated buffer
+        :return: Real pH with added noise
+        """
+        # Read the pH from the simulated buffer
+        real_ph = self.s.read_ph()
+        # Add some noise
+        return real_ph + random.uniform(-0.2, 0.2)
+
+    def read_ph_real(self):
+        """
+        Read pH from the real buffer using computer vision
+        :return: Real pH
+        """
+        raise NotImplementedError()
+
+    def add_drop_sim(self, ab, n):
         """
         Changes the pH based on a drip of base or acid
-        :param base_or_acid:
+        :param ab: 'acid' or 'base'
+        :param n: "number of drops to add
         :return:
         """
-        if base_or_acid == "base":
-            self.total_hc -= self.pipet_size
-        elif base_or_acid == "acid":
-            self.total_hc += self.pipet_size
-        else:
-            print("ERROR")
-        self.set_ph()
+        self.s.add_drop(ab, n)
 
-    def set_ph(self, n = 0):
-        """
-        Read the pH value
-        :return: pH value
-        """
-        self.ph = self.s.read_ph(self.total_hc, n)
-        print(self.ph)
-
-    def get_ph(self):
-        self.set_ph()
-        return self.ph + random.uniform(-0.2, 0.2)
+    def add_drop_real(self):
+        raise NotImplementedError()

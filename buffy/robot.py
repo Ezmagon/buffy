@@ -1,6 +1,10 @@
-#from buffy.computer_vision import VisionForRobot
+"""
+Class definition of the Robot class
+And functions related to the Robot class
+"""
 import numpy as np
-import math
+#import math
+#from buffy.computer_vision import VisionForRobot
 
 class Robot():
     """
@@ -14,6 +18,11 @@ class Robot():
         self.g = goal
         self.b = buffer
         start_ph = self.b.ph
+        # Memory should be implemented as structured array containing:
+        # Total added hc
+        # pH change over time
+        # number of drops added
+        # Kind of drops added
         self.mem = [[0, start_ph]] # "memory" of previous ph values and how many drops were added
 
     def read_mind(self):
@@ -114,9 +123,4 @@ def within_range(a,b):
     lim = (a-acc, a+acc)
     return lim[0] < b < lim[1]
 
-def generate_poly(x, y, lim):
-    poly = np.polyfit(x, y, deg=3)
-    return np.array([
-        [i, np.polyval(poly, i)]
-        for i in np.arange(*lim, 0.02)
-    ])
+
