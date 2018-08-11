@@ -1,28 +1,23 @@
-#!/opt/anaconda/bin/python
-
-from sys import argv
+# Custom
 from buffy.robot import Robot
 from buffy.buffer import Buffer
 from buffy.interface import Windows
 from buffy.computer_vision import VisionForRobot
-import random
 from buffy.simulation import Simulation
-#import threading
-#from buffy.Robot_graphics import robot_run
 from buffy.graphs import plot_robot_graphs
+# Builtin
+import random
 
 def main():
-    """
-    :param args: goal pH
-    Parse input params
-    :return: None
-    """
-    # Set the goal pH
+    # Set the goal pH from user input
     win = Windows()
     win.input_window()
     win.choice_window()
     goal = win.phGoal
+    # Get choice for starting pH for the demo
     choice = win.choice
+
+    # Choose between pH 7 (standard), a random pH or pH derived from computer vision
     if choice == "standard":
         ph_sim = 7
     elif choice == "random":
@@ -30,13 +25,10 @@ def main():
     elif choice == "computervision":
         v = VisionForRobot()
         ph_sim = v.recognize_numbers()
-
-    #gfx_thread = threading.Thread(target=robot_run)
-    #gfx_thread.start()
-
     print("Goal = ", goal, "Choice = ", choice)
+
     # Initialize the simulation
-    s = Simulation(pka=7, c=0.5, v=1, start=ph_sim)
+
     # Initialize the buffer, using the simulation
     b = Buffer(s, 4)
 
