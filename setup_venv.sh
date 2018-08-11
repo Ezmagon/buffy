@@ -3,12 +3,18 @@
 # With correct dependencies as described by the package
 # Updates dependencies if venv already exists
 
+
 if [ ! -d ./venv/ ]
 then
     which virtualenv
     if [[ $? -ne 0 ]]
     then
         pip install virtualenv
+        if [[ $? -ne 0 ]]
+        then
+            echo "Please install pip"
+            exit 1
+        fi
     fi
     virtualenv ./venv/
 fi
