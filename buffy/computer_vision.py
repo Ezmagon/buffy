@@ -4,6 +4,7 @@ from imutils import contours
 import imutils
 import cv2
 import pkg_resources
+import buffy.mnist_number_recog as numreg
 
 DIGITS_LOOKUP = {
     (1, 1, 1, 0, 1, 1, 1): 0,
@@ -22,7 +23,7 @@ DIGITS_LOOKUP = {
     (0, 0, 0, 0, 1, 1, 0): 4
 }
 
-pic7_jpeg = pkg_resources.resource_filename('buffy', 'pic7.jpeg')
+pic7_jpeg = pkg_resources.resource_filename('buffy', 'pic6.jpeg')
 
 class VisionForRobot:
     def __init__(self, picture_name=pic7_jpeg, see_pics=True):
@@ -144,6 +145,9 @@ class VisionForRobot:
                 cv2.imshow('Digit' + str(c), roi)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
+
+            numreg.find_numbers(roi)
+
 
             # compute the width and height of each of the 7 segments
             # we are going to examine
