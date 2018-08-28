@@ -34,7 +34,11 @@ class VisionForRobot:
         :param picture_name:    Which picture to check
         :param see_pics:        Follow progress or not
         """
-
+    def trigger(self, key=True):
+        if not key:
+            time.sleep(2)
+        else:
+            cv2.waitKey(0)
     def recognize_numbers(self):
         # load the example image
         image = cv2.imread(self.picture_name)
@@ -50,26 +54,26 @@ class VisionForRobot:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         if self.see_pics:
             cv2.imshow('Gray', gray)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         blurred = cv2.GaussianBlur(gray, (5, 5), 0)
         if self.see_pics:
             cv2.imshow('Blurred', blurred)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         edged = cv2.Canny(blurred, 50, 200, 255)
         if self.see_pics:
             cv2.imshow('Edge', edged)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         [warped, output] = self.zoom_to_rectangle(edged, image)
         print("Zoom 1 = ", image.shape)
         if self.see_pics:
             cv2.imshow('Zoom 1', output)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         blurred = cv2.GaussianBlur(warped, (5, 5), 0)
@@ -78,7 +82,7 @@ class VisionForRobot:
         print("Zoom 2 = ", output.shape)
         if self.see_pics:
             cv2.imshow('Zoom 2', warped)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         # threshold the warped image, then apply a series of morphological
@@ -88,7 +92,7 @@ class VisionForRobot:
         thresh = cv2.threshold(warped, threshold, 255, cv2.THRESH_BINARY_INV)[1]
         if self.see_pics:
             cv2.imshow('Threshold', thresh)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 4))
@@ -98,7 +102,7 @@ class VisionForRobot:
 
         if self.see_pics:
             cv2.imshow('Open', thresh)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         # find contours in the thresholded image, then initialize the
@@ -111,7 +115,7 @@ class VisionForRobot:
         if self.see_pics:
             cv2.drawContours(output, cnts, -1, (255, 0, 0), 1)
             cv2.imshow('Important points', output)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         # loop over the digit area candidates
@@ -128,7 +132,7 @@ class VisionForRobot:
 
         if self.see_pics:
             cv2.imshow('Digits found!', output)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         # sort the contours from left-to-right, then initialize the
@@ -143,7 +147,7 @@ class VisionForRobot:
             roi = thresh[y:y + h, x:x + w]
             if self.see_pics:
                 cv2.imshow('Digit' + str(c), roi)
-                cv2.waitKey(0)
+                self.trigger()
                 cv2.destroyAllWindows()
 
             numreg.find_numbers(roi)
@@ -190,7 +194,7 @@ class VisionForRobot:
 
         if self.see_pics:
             cv2.imshow('Result!', output)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         return 6.44
@@ -210,7 +214,7 @@ class VisionForRobot:
             cv2.drawContours(color_in, [cnts[1]], 0, (0, 255, 0), 3)
 
             cv2.imshow('Important points', color_in)
-            cv2.waitKey(0)
+            self.trigger()
             cv2.destroyAllWindows()
 
         # loop over the contours

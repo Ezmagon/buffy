@@ -155,7 +155,7 @@ class Robot():
             ax.lines.pop(-1)
             first = False
         poly_data = generate_poly(x, y, lim)
-        ax.plot(data[:, 0], data[:, 1], c="C2", zorder=4)
+        ax.plot(poly_data[:, 0], poly_data[:, 1], c="C2", zorder=4)
         plt.show()
 
 
