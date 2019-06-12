@@ -5,7 +5,7 @@ Buffy the buffer robot is the 2018 Vilnius University Biohackathon project of th
 By: Bram Wiggers, Owen Terpstra, Matthijs Tadema, Noa Leijdesdorff 
 
 # Install
-Install using `pip install git+https://github.com/Ezmagon/buffy`
+Install using `pip install git+https://github.com/mjtadema/buffy`
 
 # Run
 run the script `buffy-run.py` from PATH to run the demo 
